@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% load cart_count %}
+    
+    {% block head %}{% endblock head %}
+        
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -31,9 +35,72 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/skins/skin-demo-13.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/demos/demo-13.css' %}">
+
+
+<!-- Messenger Chat plugin Code -->
+<div id="fb-root"></div>
+
+<!-- Your Chat plugin code -->
+<div id="fb-customer-chat" class="fb-customerchat">
+</div>
+
+<script>
+  var chatbox = document.getElementById('fb-customer-chat');
+  chatbox.setAttribute("page_id", "105013422349564");
+  chatbox.setAttribute("attribution", "biz_inbox");
+</script>
+
+<!-- Your SDK code -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      xfbml            : true,
+      version          : 'v18.0'
+    });
+  };
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script
+
+
 </head>
 
 <body>
+
+
+
+
+
+
+
+
+    
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+<style>
+	/* text not a copy */
+		/* text not a copy */
+		body{
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-o-user-select: none;
+			-user-select: none;
+
+		}
+/* text not a endcopy */
+</style>
+
     <div class="page-wrapper">
         <header class="header header-10 header-intro-clearance">
             <div class="header-top">
@@ -109,30 +176,12 @@
                     <div class="header-center">
                         <div class="header-search header-search-extended header-search-visible header-search-no-radius d-none d-lg-block">
                             <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                            <form action="#" method="get">
+                            <form action="{% url 'product_search' %}" method="GET">
                                 <div class="header-search-wrapper search-wrapper-wide">
-                                    <div class="select-custom">
-                                        <select id="cat" name="cat">
-                                            <option value="">All Departments</option>
-                                            <option value="1">Fashion</option>
-                                            <option value="2">- Women</option>
-                                            <option value="3">- Men</option>
-                                            <option value="4">- Jewellery</option>
-                                            <option value="5">- Kids Fashion</option>
-                                            <option value="6">Electronics</option>
-                                            <option value="7">- Smart TVs</option>
-                                            <option value="8">- Cameras</option>
-                                            <option value="9">- Games</option>
-                                            <option value="10">Home &amp; Garden</option>
-                                            <option value="11">Motors</option>
-                                            <option value="12">- Cars and Trucks</option>
-                                            <option value="15">- Boats</option>
-                                            <option value="16">- Auto Tools &amp; Supplies</option>
-                                        </select>
-                                    </div><!-- End .select-custom -->
+                                    
                                     <label for="q" class="sr-only">Search</label>
                                     <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
-                                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                                    <a href="{% url 'product_search' %}"><button class="btn btn-primary" type="submit"><i class="icon-search"></i></button></a>
                                 </div><!-- End .header-search-wrapper -->
                             </form>
                         </div><!-- End .header-search -->
@@ -172,66 +221,12 @@
                             </a>
 
                             <div class="dropdown cart-dropdown">
-                                <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <a href="{% url 'cart_summary' %}" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
                                     <i class="icon-shopping-cart"></i>
-                                    <span class="cart-count">2</span>
+                                    <span class="cart-count">{{ request.user|cart_count }}</span>
                                     <span class="cart-txt">Cart</span>
                                 </a>
-
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <div class="dropdown-cart-products">
-                                        <div class="product">
-                                            <div class="product-cart-details">
-                                                <h4 class="product-title">
-                                                    <a href="product.html">Beige knitted elastic runner shoes</a>
-                                                </h4>
-
-                                                <span class="cart-product-info">
-                                                    <span class="cart-product-qty">1</span>
-                                                    x $84.00
-                                                </span>
-                                            </div><!-- End .product-cart-details -->
-
-                                            <figure class="product-image-container">
-                                                <a href="product.html" class="product-image">
-                                                    <img src="{% static 'assets/images/products/cart/product-1.jpg' %}" alt="product">
-                                                </a>
-                                            </figure>
-                                            <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                        </div><!-- End .product -->
-
-                                        <div class="product">
-                                            <div class="product-cart-details">
-                                                <h4 class="product-title">
-                                                    <a href="product.html">Blue utility pinafore denim dress</a>
-                                                </h4>
-
-                                                <span class="cart-product-info">
-                                                    <span class="cart-product-qty">1</span>
-                                                    x $76.00
-                                                </span>
-                                            </div><!-- End .product-cart-details -->
-
-                                            <figure class="product-image-container">
-                                                <a href="product.html" class="product-image">
-                                                    <img src="{% static 'assets/images/products/cart/product-2.jpg' %}" alt="product">
-                                                </a>
-                                            </figure>
-                                            <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                        </div><!-- End .product -->
-                                    </div><!-- End .cart-product -->
-
-                                    <div class="dropdown-cart-total">
-                                        <span>Total</span>
-
-                                        <span class="cart-total-price">$160.00</span>
-                                    </div><!-- End .dropdown-cart-total -->
-
-                                    <div class="dropdown-cart-action">
-                                        <a href="cart.html" class="btn btn-primary">View Cart</a>
-                                        <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
-                                    </div><!-- End .dropdown-cart-total -->
-                                </div><!-- End .dropdown-menu -->
+                              
                             </div><!-- End .cart-dropdown -->
                         </div>
                     </div><!-- End .header-right -->
@@ -246,301 +241,33 @@
                                 Browse Categories
                             </a>
 
-                            <div class="dropdown-menu show">
+                            <div class="dropdown-menu">
                                 <nav class="side-nav">
                                     <ul class="menu-vertical sf-arrows">
+                                        
+                                        {% for c in cate %}
+                                        
+                                        {% if not c.child.all %}
+                                        <li><a href="">{{ c.name }}</a></li>
+                                        {% else %}
                                         <li class="megamenu-container">
-                                            <a class="sf-with-ul" href="#">Electronics</a>
-
-                                            <div class="megamenu">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-8">
-                                                        <div class="menu-col">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="menu-title">Laptops & Computers</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">Desktop Computers</a></li>
-                                                                        <li><a href="#">Monitors</a></li>
-                                                                        <li><a href="#">Laptops</a></li>
-                                                                        <li><a href="#">iPad & Tablets</a></li>
-                                                                        <li><a href="#">Hard Drives & Storage</a></li>
-                                                                        <li><a href="#">Printers & Supplies</a></li>
-                                                                        <li><a href="#">Computer Accessories</a></li>
-                                                                    </ul>
-
-                                                                    <div class="menu-title">TV & Video</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">TVs</a></li>
-                                                                        <li><a href="#">Home Audio Speakers</a></li>
-                                                                        <li><a href="#">Projectors</a></li>
-                                                                        <li><a href="#">Media Streaming Devices</a></li>
-                                                                    </ul>
-                                                                </div><!-- End .col-md-6 -->
-
-                                                                <div class="col-md-6">
-                                                                    <div class="menu-title">Cell Phones</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">Carrier Phones</a></li>
-                                                                        <li><a href="#">Unlocked Phones</a></li>
-                                                                        <li><a href="#">Phone & Cellphone Cases</a></li>
-                                                                        <li><a href="#">Cellphone Chargers </a></li>
-                                                                    </ul>
-
-                                                                    <div class="menu-title">Digital Cameras</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">Digital SLR Cameras</a></li>
-                                                                        <li><a href="#">Sports & Action Cameras</a></li>
-                                                                        <li><a href="#">Camcorders</a></li>
-                                                                        <li><a href="#">Camera Lenses</a></li>
-                                                                        <li><a href="#">Photo Printer</a></li>
-                                                                        <li><a href="#">Digital Memory Cards</a></li>
-                                                                        <li><a href="#">Camera Bags, Backpacks & Cases</a></li>
-                                                                    </ul>
-                                                                </div><!-- End .col-md-6 -->
-                                                            </div><!-- End .row -->
-                                                        </div><!-- End .menu-col -->
-                                                    </div><!-- End .col-md-8 -->
-
-                                                    <div class="col-md-4">
-                                                        <div class="banner banner-overlay">
-                                                            <a href="category.html" class="banner banner-menu">
-                                                                <img src="{% static 'assets/images/demos/demo-13/menu/banner-1.jpg' %}" alt="Banner">
-                                                            </a>
-                                                        </div><!-- End .banner banner-overlay -->
-                                                    </div><!-- End .col-md-4 -->
-                                                </div><!-- End .row -->
-                                            </div><!-- End .megamenu -->
-                                        </li>
-                                        <li class="megamenu-container">
-                                            <a class="sf-with-ul" href="#">Furniture</a>
-
-                                            <div class="megamenu">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-8">
-                                                        <div class="menu-col">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="menu-title">Bedroom</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">Beds, Frames & Bases</a></li>
-                                                                        <li><a href="#">Dressers</a></li>
-                                                                        <li><a href="#">Nightstands</a></li>
-                                                                        <li><a href="#">Kids' Beds & Headboards</a></li>
-                                                                        <li><a href="#">Armoires</a></li>
-                                                                    </ul>
-
-                                                                    <div class="menu-title">Living Room</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">Coffee Tables</a></li>
-                                                                        <li><a href="#">Chairs</a></li>
-                                                                        <li><a href="#">Tables</a></li>
-                                                                        <li><a href="#">Futons & Sofa Beds</a></li>
-                                                                        <li><a href="#">Cabinets & Chests</a></li>
-                                                                    </ul>
-                                                                </div><!-- End .col-md-6 -->
-
-                                                                <div class="col-md-6">
-                                                                    <div class="menu-title">Office</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">Office Chairs</a></li>
-                                                                        <li><a href="#">Desks</a></li>
-                                                                        <li><a href="#">Bookcases</a></li>
-                                                                        <li><a href="#">File Cabinets</a></li>
-                                                                        <li><a href="#">Breakroom Tables</a></li>
-                                                                    </ul>
-
-                                                                    <div class="menu-title">Kitchen & Dining</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#">Dining Sets</a></li>
-                                                                        <li><a href="#">Kitchen Storage Cabinets</a></li>
-                                                                        <li><a href="#">Bakers Racks</a></li>
-                                                                        <li><a href="#">Dining Chairs</a></li>
-                                                                        <li><a href="#">Dining Room Tables</a></li>
-                                                                        <li><a href="#">Bar Stools</a></li>
-                                                                    </ul>
-                                                                </div><!-- End .col-md-6 -->
-                                                            </div><!-- End .row -->
-                                                        </div><!-- End .menu-col -->
-                                                    </div><!-- End .col-md-8 -->
-
-                                                    <div class="col-md-4">
-                                                        <div class="banner banner-overlay">
-                                                            <a href="category.html" class="banner banner-menu">
-                                                                <img src="{% static 'assets/images/demos/demo-13/menu/banner-2.jpg' %}" alt="Banner">
-                                                            </a>
-                                                        </div><!-- End .banner banner-overlay -->
-                                                    </div><!-- End .col-md-4 -->
-                                                </div><!-- End .row -->
-                                            </div><!-- End .megamenu -->
-                                        </li>
-                                        <li class="megamenu-container">
-                                            <a class="sf-with-ul" href="#">Cooking</a>
-
-                                            <div class="megamenu">
-                                                <div class="menu-col">
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="menu-title">Cookware</div><!-- End .menu-title -->
-                                                            <ul>
-                                                                <li><a href="#">Cookware Sets</a></li>
-                                                                <li><a href="#">Pans, Griddles & Woks</a></li>
-                                                                <li><a href="#">Pots</a></li>
-                                                                <li><a href="#">Skillets & Grill Pans</a></li>
-                                                                <li><a href="#">Kettles</a></li>
-                                                                <li><a href="#">Soup & Stockpots</a></li>
-                                                            </ul>
-                                                        </div><!-- End .col-md-4 -->
-
-                                                        <div class="col-md-4">
-                                                            <div class="menu-title">Dinnerware & Tabletop</div><!-- End .menu-title -->
-                                                            <ul>
-                                                                <li><a href="#">Plates</a></li>
-                                                                <li><a href="#">Cups & Mugs</a></li>
-                                                                <li><a href="#">Trays & Platters</a></li>
-                                                                <li><a href="#">Coffee & Tea Serving</a></li>
-                                                                <li><a href="#">Salt & Pepper Shaker</a></li>
-                                                            </ul>
-                                                        </div><!-- End .col-md-4 -->
-
-                                                        <div class="col-md-4">
-                                                            <div class="menu-title">Cooking Appliances</div><!-- End .menu-title -->
-                                                            <ul>
-                                                                <li><a href="#">Microwaves</a></li>
-                                                                <li><a href="#">Coffee Makers</a></li>
-                                                                <li><a href="#">Mixers & Attachments</a></li>
-                                                                <li><a href="#">Slow Cookers</a></li>
-                                                                <li><a href="#">Air Fryers</a></li>
-                                                                <li><a href="#">Toasters & Ovens</a></li>
-                                                            </ul>
-                                                        </div><!-- End .col-md-4 -->
-                                                    </div><!-- End .row -->
-
-                                                    <div class="row menu-banners">
-                                                        <div class="col-md-4">
-                                                            <div class="banner">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/images/demos/demo-13/menu/1.jpg' %}" alt="image">
-                                                                </a>
-                                                            </div><!-- End .banner -->
-                                                        </div><!-- End .col-md-4 -->
-
-                                                        <div class="col-md-4">
-                                                            <div class="banner">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/images/demos/demo-13/menu/2.jpg' %}" alt="image">
-                                                                </a>
-                                                            </div><!-- End .banner -->
-                                                        </div><!-- End .col-md-4 -->
-
-                                                        <div class="col-md-4">
-                                                            <div class="banner">
-                                                                <a href="#">
-                                                                    <img src="{% static 'assets/images/demos/demo-13/menu/3.jpg' %}" alt="image">
-                                                                </a>
-                                                            </div><!-- End .banner -->
-                                                        </div><!-- End .col-md-4 -->
-                                                    </div><!-- End .row -->
-                                                </div><!-- End .menu-col -->
-                                            </div><!-- End .megamenu -->
-                                        </li>
-                                        <li class="megamenu-container">
-                                            <a class="sf-with-ul" href="#">Clothing</a>
-
-                                            <div class="megamenu">
-                                                <div class="row no-gutters">
-                                                    <div class="col-md-8">
-                                                        <div class="menu-col">
-                                                            <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <div class="menu-title">Women</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#"><strong>New Arrivals</strong></a></li>
-                                                                        <li><a href="#"><strong>Best Sellers</strong></a></li>
-                                                                        <li><a href="#"><strong>Trending</strong></a></li>
-                                                                        <li><a href="#">Clothing</a></li>
-                                                                        <li><a href="#">Shoes</a></li>
-                                                                        <li><a href="#">Bags</a></li>
-                                                                        <li><a href="#">Accessories</a></li>
-                                                                        <li><a href="#">Jewlery & Watches</a></li>
-                                                                        <li><a href="#"><strong>Sale</strong></a></li>
-                                                                    </ul>
-                                                                </div><!-- End .col-md-6 -->
-
-                                                                <div class="col-md-6">
-                                                                    <div class="menu-title">Men</div><!-- End .menu-title -->
-                                                                    <ul>
-                                                                        <li><a href="#"><strong>New Arrivals</strong></a></li>
-                                                                        <li><a href="#"><strong>Best Sellers</strong></a></li>
-                                                                        <li><a href="#"><strong>Trending</strong></a></li>
-                                                                        <li><a href="#">Clothing</a></li>
-                                                                        <li><a href="#">Shoes</a></li>
-                                                                        <li><a href="#">Bags</a></li>
-                                                                        <li><a href="#">Accessories</a></li>
-                                                                        <li><a href="#">Jewlery & Watches</a></li>
-                                                                    </ul>
-                                                                </div><!-- End .col-md-6 -->
-                                                            </div><!-- End .row -->
-                                                        </div><!-- End .menu-col -->
-                                                    </div><!-- End .col-md-8 -->
-
-                                                    <div class="col-md-4">
-                                                        <div class="banner banner-overlay">
-                                                            <a href="category.html" class="banner banner-menu">
-                                                                <img src="{% static 'assets/images/demos/demo-13/menu/banner-3.jpg' %}" alt="Banner">
-                                                            </a>
-                                                        </div><!-- End .banner banner-overlay -->
-                                                    </div><!-- End .col-md-4 -->
-                                                </div><!-- End .row -->
-
-                                                <div class="menu-col menu-brands">
-                                                    <div class="row">
-                                                        <div class="col-lg-2">
-                                                            <a href="#" class="brand">
-                                                                <img src="{% static 'assets/images/brands/1.png' %}" alt="Brand Name">
-                                                            </a>
-                                                        </div><!-- End .col-lg-2 -->
-
-                                                        <div class="col-lg-2">
-                                                            <a href="#" class="brand">
-                                                                <img src="{% static 'assets/images/brands/2.png' %}" alt="Brand Name">
-                                                            </a>
-                                                        </div><!-- End .col-lg-2 -->
-
-                                                        <div class="col-lg-2">
-                                                            <a href="#" class="brand">
-                                                                <img src="{% static 'assets/images/brands/3.png' %}" alt="Brand Name">
-                                                            </a>
-                                                        </div><!-- End .col-lg-2 -->
-
-                                                        <div class="col-lg-2">
-                                                            <a href="#" class="brand">
-                                                                <img src="{% static 'assets/images/brands/4.png' %}" alt="Brand Name">
-                                                            </a>
-                                                        </div><!-- End .col-lg-2 -->
-
-                                                        <div class="col-lg-2">
-                                                            <a href="#" class="brand">
-                                                                <img src="{% static 'assets/images/brands/5.png' %}" alt="Brand Name">
-                                                            </a>
-                                                        </div><!-- End .col-lg-2 -->
-
-                                                        <div class="col-lg-2">
-                                                            <a href="#" class="brand">
-                                                                <img src="{% static 'assets/images/brands/6.png' %}" alt="Brand Name">
-                                                            </a>
-                                                        </div><!-- End .col-lg-2 -->
-                                                    </div><!-- End .row -->
-                                                </div><!-- End .menu-brands -->
-                                            </div><!-- End .megamenu -->
-                                        </li>
-                                        <li><a href="#">Home Appliances</a></li>
-                                        <li><a href="#">Healthy & Beauty</a></li>
-                                        <li><a href="#">Shoes & Boots</a></li>
-                                        <li><a href="#">Travel & Outdoor</a></li>
-                                        <li><a href="#">Smart Phones</a></li>
-                                        <li><a href="#">TV & Audio</a></li>
-                                        <li><a href="#">Gift Ideas</a></li>
+                                            <a class="sf-with-ul" href="#">{{ c.name }}</a>
+                                            <ul>
+                                                
+                                                {% for sc in c.child.all %}
+                                                    <li><a href="">{{ sc.name }}</a>
+                                                    
+                                                    </li>
+                                                {% endfor %}
+                                                    
+                                            </ul>
+                                            
+                                        </li>   
+                                        {% endif %}
+                                            
+                                        {% endfor %}
+                                            
+                                        
                                     </ul><!-- End .menu-vertical -->
                                 </nav><!-- End .side-nav -->
                             </div><!-- End .dropdown-menu -->
@@ -1456,6 +1183,23 @@
         </div><!-- End .modal-dialog -->
     </div><!-- End .modal -->
 
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        {% if messages %}
+        {% for x in messages %}
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "{{x}}",
+            showConfirmButton: false,
+            timer: 1500
+            });
+            {% endfor %}
+            {% endif %}
+    </script>
+
     <!-- Plugins JS File -->
     <script src="{% static 'assets/js/jquery.min.js' %}"></script>
     <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
@@ -1471,6 +1215,12 @@
     <!-- Main JS File -->
     <script src="{% static 'assets/js/main.js' %}"></script>
     <script src="{% static 'assets/js/demos/demo-13.js' %}"></script>
+
+    
+    {% block script %}
+        
+    {% endblock script %}
+        
 </body>
 
 </html>
